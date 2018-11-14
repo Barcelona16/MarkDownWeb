@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="https://static.pingendo.com/bootstrap/bootstrap-4.1.3.css">
+  <script src="js/QUnit.js"></script>
+  <link rel="stylesheet" href="css/QUnit.css">
+  <script src="js/ace/ace.js"></script>
+  <script src="js/marked.js"></script>
+  <link href="css/markdown.css" rel="stylesheet" />
+  <script src="js/showPanel.js"></script>
+  <style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				outline: none;
+				border-radius: 0;
+			}
+			
+			#bar {
+				height: 130px;
+				width: 100%;
+				color: #fff;
+			}
+			
+			#bar #topbar {
+				height: 40px;
+				background-color: #444;
+				width: 100%;
+				color: #fff;
+				line-height: 50px;
+			}
+			
+			#bar #czbar {
+				height: 50px;
+				background-color: #FFFFFF;
+				width: 100%;
+				color: #fff;
+				line-height: 50px;
+			}
+			
+			#bar #toolbar {
+				height: 40px;
+				background-color: #AAAAAA;
+				width: 100%;
+				color: #fff;
+				line-height: 50px;
+			}
+			
+
+			
+			#editor-column,
+			#preview-column {
+				width: 49.5%;
+				height: 100%;
+				overflow: auto;
+				position: relative;
+				background-color: #F6F6F6;
+			}
+			
+			.pull-left {
+				float: left;
+			}
+			
+			.pull-right {
+				float: right;
+			}
+			
+			#toolbar img {
+				width: 25px;
+				height: 25px;
+				padding-top: 8px;
+				padding-bottom: 7px;
+				margin-left: 10px;
+			}
+			
+			#toolbar img:hover {
+				background: #EBEBEB;
+				cursor: pointer;
+			}
+			
+			#commit {
+				color: #FFFFFF;
+				padding: 5px 15px;
+				background: #BE1A21;
+				border: 0px none #FFECEC;
+			}
+			
+			#commit:hover {
+				cursor: pointer;
+				background: #CB474D;
+			}
+			
+			#dialog{
+				position: fixed;
+				height: 400px;
+				width: 550px;
+				background: #FFFFFF;
+				z-index: 5;
+				left: 30%;
+				border: 1px solid gray;
+				top: 25%;
+				display: none;
+			}
+			
+			#showImg{
+				height: 160px;
+				width: 160px;
+				position: absolute;
+				border: 0.5px solid gainsboro;
+				bottom: 80px;
+				left:35%;
+			}
+			
+			#cancel{
+				border: 0px none #FFECEC;
+				background: #999999;
+				color: #FFFFFF;
+				padding: 5px 15px;
+				position: absolute;
+				top: 8px;
+				right: 100px;
+			}
+			
+			#cancel:hover{
+				background: #AAAAAA;	
+			}
+			
+			#insert{
+				border: 0px none #FFECEC;
+				background: #BE1A21;
+				color: #FFFFFF;
+				padding: 5px 15px;
+				position: absolute;
+				top: 8px;
+				right: 30px;
+			}
+			
+			#insert:hover{
+				background: #CB474D;
+			}
+			
+			#upload{
+				border: 0px none #FFECEC;
+				background: #999999;
+				color: #FFFFFF;
+				padding: 7px 30px;
+				position: absolute;
+				top: 67px;
+				right: 40px;
+			}
+			
+			#upload:hover{
+				background: #AAAAAA;	
+			}
+			
+			#filediv{
+				width: 70%;
+				height: 30px;
+				top: 70px;
+				left: 20px;
+				position: absolute;
+				
+			}
+			
+			#file{
+				width: 95%;
+				height: 30px;
+				position: relative;
+				top: -27px;
+				opacity: 0.000001;
+				cursor: pointer;
+			}
+			
+			
+		</style>
+  </head>
+
+<body>
+    <nav class="navbar navbar-expand-md bg-primary navbar-dark">
+        <div class="container"> 
+            <a class="navbar-brand" href="HomepageStudent.html">主页</a>
+            <a class="navbar-brand" href="LabList.html">项目列表</a>
+            <a class="navbar-brand" href="taskStudent.html">我的项目</a> 
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent"> <span class="navbar-toggler-icon"></span> </button>
+            <div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
+                <ul class="navbar-nav" >
+                    <li class="nav-item"> <a class="nav-link" onclick="logout()"><i class="fa d-inline fa-lg fa-envelope-o"></i> 退出</a> </li>
+                </ul> 
+                <a class="btn navbar-btn btn-primary ml-2 text-white"><i class="fa d-inline fa-lg fa-user-circle-o"></i> 登录</a>
+            </div>
+        </div>
+    </nav>
+    
+
+  <div class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="display-1">这是您的主页</h1>
+          <h1 class="">每一天，乐在ddl</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 p-4" style="">
+          <h3>This is your homepage</h3>
+          <p>加*号部分为必填项，请认真填写，</p>
+          <p>手机/微信号只有在学生报名表和导师联系学生时可见。</p>
+		  <p>关键词订阅列表以及实验室订阅列表输入最多三个。</p>
+		  <p>每一项请以空格隔开。</p>
+		  <p>输入格式样例:</p>
+		  <p>钱多 锅少 福利好</p>
+          <br> <br>
+          <br> <br>
+          <br> <br>
+          <br> <br>
+          <img src="img/homepageStudent.jpg" alt="你成功引起了我的注意">
+        </div>
+        <div class="col-md-6 p-4" style="">
+          <h3 class="mb-3">本科生信息</h3>
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 姓名：*</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="name" placeholder="Your Name"> </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 学号：*</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="studentNumber" placeholder="201xxxxxxx"> </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 年级：*</p>
+              </div>
+              <div class="form-group col-md-6"> 
+			  <select type="text" class="form-control" id="grade" >
+								<option value="大一">大一</option> 
+                                <option value="大二">大二</option>
+								<option value="大三">大三</option>
+								<option value="大四">大四</option>
+			  </select>
+			  </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 手机：*</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="phoneNumber" placeholder="xxxxxx"> </div>
+            </div>
+			 <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 微信号：*</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="wechatNumber" placeholder="xxxxxx"> </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 邮箱*</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="email" class="form-control" id="email" placeholder="xxx@mails.tsinghua.edu.cn"> </div>
+            </div>
+			<div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 系别:</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="department" placeholder="计算机科学与技术"> </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 个人主页链接：</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="personBlog" placeholder="xxx.com"> </div>
+            </div>
+			<div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 研究所订阅列表：</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="lab" placeholder="高性能所"> </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <p class="text-dark lead"> 关键词订阅列表：</p>
+              </div>
+              <div class="form-group col-md-6"> <input type="text" class="form-control" id="keyword" placeholder="钱多 锅少 福利好"> </div>
+            </div>
+            <p class="text-dark lead"> 个人介绍：*</p>
+            <div  style="min-height:400px" id="mdedit" > <textarea id="introduce"   rows="3" placeholder="Your Information"></textarea> </div> 选择简历上传:<input type="file" name="file1"><br>
+            <input type="submit" onclick="upTest()" value="上传" class="btn btn-primary" href="HomepageTeacher.html"><br><br>
+          </form>
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <button type="button" id="edit" onclick="change()" class="btn btn-primary">Edit</button>
+            </div>
+            <div class="form-group col-md-6">
+              
+			   <button type="button" id="update"  class="btn btn-primary">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+    <div class="py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center"> <i class="d-block fa fa-stop-circle mb-3 text-muted fa-3x"></i>
+            <p> <a href="https://goo.gl/maps/AUq7b9W7yYJ2" target="_blank"> ZIJING 2# <br>MADE IN CHINA</a> </p>
+            <p class="mb-0"> <a href="mailto:info@pingendo.com">https://barcelona16.github.io/</a> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 d-flex align-items-center justify-content-center my-3"> <a href="#">
+              <i class="d-block fa fa-facebook-official text-muted fa-lg mr-2"></i>
+            </a> <a href="#">
+              <i class="d-block fa fa-instagram text-muted fa-lg mx-2"></i>
+            </a> <a href="#">
+              <i class="d-block fa fa-google-plus-official text-muted fa-lg mx-2"></i>
+            </a> <a href="#">
+              <i class="d-block fa fa-pinterest-p text-muted fa-lg mx-2"></i>
+            </a> <a href="#">
+              <i class="d-block fa fa-reddit text-muted fa-lg mx-2"></i>
+            </a> <a href="#">
+              <i class="d-block fa fa-twitter text-muted fa-lg ml-2"></i>
+            </a> </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p class="mb-0">© 2014-2018 下流网瘾王. All rights reserved</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous" style=""></script>
+	 <script src="js/jquery1.11.3.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	<script src="js/HomepageStudent.js"></script>
+     <script src="js/jqueryui.js"></script>
+	 <link rel="stylesheet" href="js/jqueryui.css">
+
+
+
+
+	<script>
+	/*
+	jquery用的是1.11.3因为在使用ui的autocomplete的时候某个函数找不到，
+	目测应该是在新的版本里面改了名字，
+	所以本页面暂时先用旧版本jquery
+	*/
+      $(document).ready(function() 
+	  {
+		setReadonly();
+		autoCompleteKeyword();//自动补全关键词
+		autoCompleteLab();//自动补全实验室订阅
+      });
+	   takeToken();
+	 $("#update").click(function() 
+	 {
+		if(submitCheck())
+			updateClick();
+     });
+	 
+	 
+	 
+	 
+	 var imgUrl='';//上传图片返回的url
+			
+				var acen_edit = ace.edit('mdedit');//左侧编辑框
+				acen_edit.setTheme('ace/theme/chrome');
+				acen_edit.getSession().setMode('ace/mode/markdown');
+				acen_edit.renderer.setShowPrintMargin(false);
+
+				$("#mdedit").keyup(function() {//给左侧编辑框添加事件，，当键盘抬起时，右侧实时显示左侧的md内容
+					$("#keyword").val(marked(acen_edit.getValue()));
+				});
+				
+
+				function f_commit() {
+					console.log($('#group').val());
+				}
+				//DownPanel是我自己写的一个提示，当鼠标移到该dom上，回显示相关提示
+				$('#bold').DownPanel({
+					render: '<span style="color:#ffffff;">加粗</span>',
+					background: '#000000',
+					top: ($('#bold').offset().top + 40),
+					left: ($('#bold').offset().left)
+				});
+				$('#code').DownPanel({
+					render: '<span style="color:#ffffff;">插入代码</span>',
+					background: '#000000',
+					top: ($('#code').offset().top + 40),
+					left: ($('#code').offset().left)
+				});
+				$('#hyperlink').DownPanel({
+					render: '<span style="color:#ffffff;">插入超链接</span>',
+					background: '#000000',
+					top: ($('#hyperlink').offset().top + 40),
+					left: ($('#hyperlink').offset().left)
+				});
+				$('#image').DownPanel({
+					render: '<span style="color:#ffffff;">插入图片</span>',
+					background: '#000000',
+					top: ($('#image').offset().top + 40),
+					left: ($('#image').offset().left)
+				});
+				$('#italic').DownPanel({
+					render: '<span style="color:#ffffff;">斜体</span>',
+					background: '#000000',
+					top: ($('#italic').offset().top + 40),
+					left: ($('#italic').offset().left)
+				});
+				
+				//左侧插入，用户插入一些特定方法
+				function insertText(val) {
+					acen_edit.insert(val); //光标位置插入
+				}
+				
+				//选择图片后，用于显示图片路径
+				function setFile(){
+					$('#fileName').val($('#file').val());
+				}
+				
+				//上传图片到服务器，返回图片地址
+				function uploadFile(){
+					imgUrl='https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/logo_white.png';
+					$('#showImg').attr('src','https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/logo_white.png');
+				}
+				
+				//插入图片弹窗取消
+				function f_cancel(){
+					$('#dialog').hide();
+				}
+				
+				//插入图片
+				function insert(){
+					$('#dialog').hide();
+					insertText('![这里写图片描述]('+imgUrl+')')
+				}
+				
+				//显示弹窗
+				function showDialog(){
+					$('#dialog').show();
+				}
+	</script>
+  </div>
+</body>
+
+</html>
